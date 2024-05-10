@@ -333,14 +333,16 @@ public final class StateVariablesExport {
                 SlackTerminal st = vl.getExtension(SlackTerminal.class);
                 if (st != null && !st.isEmpty()) {
                     Bus bus = st.getTerminal().getBusBreakerView().getBus();
-                    Optional<Bus> optionalBusViewBus = BusTools.getBusViewBus(bus);
-                    if (optionalBusViewBus.isPresent()) {
-                        // The total mismatch of the slack (as busview bus) has been left in the bus/breaker bus labeled as slack.
-                        // This is ensured by the calculation of flows through switches (SwitchesFlow).
-                        // We compute the total mismatch left by power flow calculation in the busview bus and
-                        // create an SvInjection that is assigned to the bus/breaker view bus.
-                        Bus busViewBus = optionalBusViewBus.get();
-                        computeMismatchAndWriteSvInjection(bus, busViewBus, cimNamespace, writer, context);
+                    if (bus != null) {
+                        Optional<Bus> optionalBusViewBus = BusTools.getBusViewBus(bus);
+                        if (optionalBusViewBus.isPresent()) {
+                            // The total mismatch of the slack (as busview bus) has been left in the bus/breaker bus labeled as slack.
+                            // This is ensured by the calculation of flows through switches (SwitchesFlow).
+                            // We compute the total mismatch left by power flow calculation in the busview bus and
+                            // create an SvInjection that is assigned to the bus/breaker view bus.
+                            Bus busViewBus = optionalBusViewBus.get();
+                            computeMismatchAndWriteSvInjection(bus, busViewBus, cimNamespace, writer, context);
+                        }
                     }
                 }
             }
